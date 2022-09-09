@@ -23,30 +23,19 @@ public class InputUI : MonoBehaviour{
         
         foreach(Touch touch in Input.touches){
 			
-            if (touch.phase == TouchPhase.Began){
-				touchBegan = touch.position;
-            }
-			if (touch.phase == TouchPhase.Ended){
-				touchEnded = touch.position;
-				
-				sumVector = touchBegan + touchEnded;
-				if (sumVector.x>0){
+			
+			//смотрим изменение в движении пальца, в зависимости от этого показываем или скрываем боковую панель
+			if (touch.phase == TouchPhase.Moved){
+				if (touch.deltaPosition.x<0){
 					
 				UIscript.changeSizeHalf();
 				}
-				if (sumVector.x<0){
+				if (touch.deltaPosition.x>0){
 					
 				UIscript.changeSizeFull();
 				}
-				
-				touchEnded = Vector2.zero;
-				touchBegan = Vector2.zero;
             }
 			
-			if (touch.phase == TouchPhase.Canceled){
-				touchEnded = Vector2.zero;
-				touchBegan = Vector2.zero;
-            }
         }
     }
 }
