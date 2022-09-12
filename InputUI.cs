@@ -20,22 +20,23 @@ public class InputUI : MonoBehaviour{
 
     // Update is called once per frame
     void Update(){
-        
-        foreach(Touch touch in Input.touches){
+        if (Screen.orientation==ScreenOrientation.LandscapeLeft|Screen.orientation==ScreenOrientation.LandscapeRight){
+			foreach(Touch touch in Input.touches){
 			
 			
-			//смотрим изменение в движении пальца, в зависимости от этого показываем или скрываем боковую панель
-			if (touch.phase == TouchPhase.Moved){
-				if (touch.deltaPosition.x<0){
+				//смотрим изменение в движении пальца, в зависимости от этого показываем или скрываем боковую панель
+				if (touch.phase == TouchPhase.Moved){
+					if (touch.deltaPosition.x<0){
 					
-				UIscript.changeSizeHalf();
-				}
-				if (touch.deltaPosition.x>0){
+						UIscript.changeSizeHalf();
+					}
+					if (touch.deltaPosition.x>0){
 					
-				UIscript.changeSizeFull();
+						UIscript.changeSizeFull();
+					}
 				}
-            }
 			
-        }
+			}
+		}
     }
 }
