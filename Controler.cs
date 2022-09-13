@@ -14,7 +14,6 @@ public class Controler : MonoBehaviour{
 	private int heightCL;
 	
 	private bool teeck;
-	private bool deviceOrientationСhange;
 	private bool deviceOrientationLandscape;
 		
 	private GameObject clockObject;
@@ -33,12 +32,13 @@ public class Controler : MonoBehaviour{
 		canvasClock = GameObject.Find("CanvasClock");
 		canvasInfo = GameObject.Find("CanvasInfo");
 		teeck = true;
-		deviceOrientationСhange = true;
 		
 			if (Screen.orientation==ScreenOrientation.LandscapeLeft|Screen.orientation==ScreenOrientation.LandscapeRight){
 				deviceOrientationLandscape = true;
+				changeSizeFull();
 			}else{
 				deviceOrientationLandscape = false;
+				changeToPortrait();
 			}
 			
 		scriptTarget = clockObject.GetComponent<Cloks>();
@@ -68,7 +68,7 @@ public class Controler : MonoBehaviour{
 			
 		}
 		
-			
+		
 		if (deviceOrientationLandscape){
 			if(Screen.orientation==ScreenOrientation.Portrait|Screen.orientation==ScreenOrientation.PortraitUpsideDown){
 				deviceOrientationLandscape  = false;
@@ -93,38 +93,28 @@ public class Controler : MonoBehaviour{
 	
 	public void changeSizeHalf(){
 		
-		canvasClock.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		canvasClock.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		
-		canvasClock.GetComponent<RectTransform>().offsetMax = new Vector2 (-(int)this.GetComponent<RectTransform>().rect.width/2,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMin = new Vector2 ((int)this.GetComponent<RectTransform>().rect.width/2,0);
+		canvasClock.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0);
+		canvasClock.GetComponent<RectTransform>().anchorMax = new Vector2 	(0.5f	,1);
+		canvasInfo.GetComponent<RectTransform>().anchorMin = new Vector2 	(0.5f	,0);
+		canvasInfo.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,1);
 		
 	}
 	
 	public void changeSizeFull(){
 		
-		canvasClock.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		canvasClock.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		
-		canvasClock.GetComponent<RectTransform>().offsetMax = new Vector2 (-(int)this.GetComponent<RectTransform>().rect.width/10,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMin = new Vector2 ((int)this.GetComponent<RectTransform>().rect.width-((int)this.GetComponent<RectTransform>().rect.width/10),0);
+		canvasClock.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0);
+		canvasClock.GetComponent<RectTransform>().anchorMax = new Vector2 	(0.9f	,1);
+		canvasInfo.GetComponent<RectTransform>().anchorMin = new Vector2 	(0.9f	,0);
+		canvasInfo.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,1);
 		
 	}
 	
 	private void changeToPortrait(){
 		
-		canvasClock.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		canvasClock.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMin = new Vector2 (0,0);
-		canvasInfo.GetComponent<RectTransform>().offsetMax = new Vector2 (0,0);
-		
-		
-		canvasClock.GetComponent<RectTransform>().offsetMin = new Vector2 (0,(int)this.GetComponent<RectTransform>().rect.height/2);
-		canvasInfo.GetComponent<RectTransform>().offsetMax = new Vector2 (0,-(int)this.GetComponent<RectTransform>().rect.height/2);
+		canvasClock.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0.5f);
+		canvasClock.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,1);
+		canvasInfo.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0);
+		canvasInfo.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,0.5f);
 		
 	}
 }
