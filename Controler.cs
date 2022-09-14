@@ -25,6 +25,10 @@ public class Controler : MonoBehaviour{
 	private string rectUI;
 	
 	
+	private string personalSaveData;
+	public GameObject Content;
+	private taskUIManager taskTarget;
+	
     void Start(){
 		
 		//делаем привязки к объектам
@@ -45,6 +49,21 @@ public class Controler : MonoBehaviour{
 		updateClock(System.DateTime.Now.ToString("HH:mm"));
 		timeElapsed=0;
 		interval=1;
+		
+		
+		taskTarget=Content.GetComponent<taskUIManager>();
+		
+		if (PlayerPrefs.HasKey("SavedString")){
+			
+		personalSaveData = PlayerPrefs.GetString("SavedString");
+		taskTarget.AddToList(personalSaveData);
+		
+		}else{
+			
+		taskTarget.AddToList("1|10:25|2012-05-28|у вас нет ни одного задания|вып|прос");
+		PlayerPrefs.SetString("SavedString", "1|10:25|2012-05-28|тестовое задание|вып|прос");
+		
+		}
 		
     }
 
