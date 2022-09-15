@@ -48,15 +48,11 @@ public class taskUIManager : MonoBehaviour{
 			
 			for (int a = 0; a < taskList.Count; a++){
 				
-				Debug.Log(a);
-				Debug.Log(a*(1/((float)(taskList.Count))));
-				Debug.Log((a+1)*(1/((float)(taskList.Count))));
-				
 				taskList[a].GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,(a*(1/((float)(taskList.Count))))					);
 				taskList[a].GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((a+1)*(1/((float)(taskList.Count))))				);
 				Debug.Log("------");
 			}
-		Debug.Log("проехали");
+			
 	actionTarget =clone.GetComponent<taskScript>();
 	actionTarget.create(task);
 	
