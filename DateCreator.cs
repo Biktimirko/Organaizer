@@ -23,20 +23,27 @@ public class DateCreator : MonoBehaviour{
     void Start(){
 	Debug.Log("проехали");
 	//Hour set
+	int SizeH =24; //количество объектов в списке
+	float inSizeH=5f;		//количество одновременно показываемых объектов
+	int	SizeHpanel = SizeH+(int)(SizeH/inSizeH);
 	HourList = new List<GameObject>();
-	ContentHour.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,-3);
-		for (int a = 0; a < 24; a++){
+	ContentHour.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		, -(SizeH/inSizeH)+1);
+	for (int a = 0; a < (int)(SizeH); a++){
 			GameObject clone = Instantiate(ButPref) as GameObject;
 			clone.GetComponent<RectTransform>().SetParent(ContentHour.GetComponent<RectTransform>());
 			clone.GetComponent<RectTransform>().offsetMin = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
-			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,a*(1f/24f));
-			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,a*(1f/24f)+(1f/24f));
+			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,a*(1f/SizeH));
+			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,a*(1f/SizeH)+(1f/SizeH));
 			actionTarget =clone.GetComponent<ButSkript>();
 			actionTarget.setInfo((23-a)+"");
 			clone.GetComponentInChildren<TMP_Text>().text=(23-a)+"";
 			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
+	
+
+
+		
     
 	//Minute set
 	MinuteList = new List<GameObject>();
