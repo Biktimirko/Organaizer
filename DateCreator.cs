@@ -7,12 +7,16 @@ using TMPro;
 public class DateCreator : MonoBehaviour{
 	
 	public GameObject ContentHour;
+	public GameObject ScrollHour;
+	
+	
 	public GameObject ContentMinute;
 	public GameObject ContentMonth;
 	public GameObject ContentDate;
 	public GameObject TaskTime;
 	
 	public GameObject ButPref;
+	
 	
 	private List<GameObject> HourList;
 	private List<GameObject> MinuteList;
@@ -22,29 +26,53 @@ public class DateCreator : MonoBehaviour{
     // Start is called before the first frame update
     void Start(){
 	Debug.Log("проехали");
+	
+	
+	
 	//Hour set
-	int SizeH =24; //количество объектов в списке
-	float inSizeH=5f;		//количество одновременно показываемых объектов
-	int	SizeHpanel = SizeH+(int)(SizeH/inSizeH);
+	//
+	//Здесь начинается кусок скроллера как у эпл
+	//
+	//
+	
+	float 		SizeH =24f; 		//количество объектов в списке
+	float 		inSizeH=5f;			//количество одновременно показываемых объектов
+	bool		freeSpace=true;		//евли истина, то сверху и снизу будут пыстые места
+	float 		SpaceInt=0;
+	
+	if (freeSpace){
+		SpaceInt = inSizeH-1;
+		SizeH = SizeH + SpaceInt;
+		
+	}
+	
 	HourList = new List<GameObject>();
+	
+	
 	ContentHour.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		, -(SizeH/inSizeH)+1);
-	for (int a = 0; a < (int)(SizeH); a++){
+	
+	
+	for (int a = 0; a < (int)(SizeH-SpaceInt); a++){
 			GameObject clone = Instantiate(ButPref) as GameObject;
 			clone.GetComponent<RectTransform>().SetParent(ContentHour.GetComponent<RectTransform>());
 			clone.GetComponent<RectTransform>().offsetMin = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
-			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,a*(1f/SizeH));
-			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,a*(1f/SizeH)+(1f/SizeH));
+			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceInt/2)+a)*(1f/SizeH));
+			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceInt/2)+a)*(1f/SizeH)+(1f/SizeH));
 			actionTarget =clone.GetComponent<ButSkript>();
 			actionTarget.setInfo((23-a)+"");
 			clone.GetComponentInChildren<TMP_Text>().text=(23-a)+"";
 			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
-	
-
-
 		
-    
+	//
+	//
+	//Здесь заканчивается кусок скроллера как у эпл
+	//
+	//
+		
+		
+		
 	//Minute set
 	MinuteList = new List<GameObject>();
 	ContentMinute.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,-11);
@@ -87,6 +115,6 @@ public class DateCreator : MonoBehaviour{
     // Update is called once per frame
     void Update()
     {
-        
+        TaskTime.GetComponent<TMP_Text>().text= ScrollHour.GetComponent<Scrollbar>().value+"";
     }
 }
