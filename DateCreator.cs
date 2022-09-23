@@ -22,12 +22,9 @@ public class DateCreator : MonoBehaviour{
 	private List<GameObject> MinuteList;
 	private ButSkript actionTarget;
 	
-	
-    // Start is called before the first frame update
-    void Start(){
+	// Start is called before the first frame update
+	void Start(){
 	Debug.Log("проехали");
-	
-	
 	
 	//Hour set
 	//
@@ -40,19 +37,15 @@ public class DateCreator : MonoBehaviour{
 	bool		freeSpace=true;		//евли истина, то сверху и снизу будут пыстые места
 	float 		SpaceInt=0;
 	
-	if (freeSpace){
-		SpaceInt = inSizeH-1;
-		SizeH = SizeH + SpaceInt;
-		
-	}
+		if (freeSpace){
+			SpaceInt = inSizeH-1;
+			SizeH = SizeH + SpaceInt;
+		}
 	
 	HourList = new List<GameObject>();
-	
-	
 	ContentHour.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		, -(SizeH/inSizeH)+1);
-	
-	
-	for (int a = 0; a < (int)(SizeH-SpaceInt); a++){
+	ScrollHour.GetComponent<Scrollbar>().numberOfSteps=(int)SizeH;
+		for (int a = 0; a < (int)(SizeH-SpaceInt); a++){
 			GameObject clone = Instantiate(ButPref) as GameObject;
 			clone.GetComponent<RectTransform>().SetParent(ContentHour.GetComponent<RectTransform>());
 			clone.GetComponent<RectTransform>().offsetMin = new Vector2 	(0		,0);
@@ -71,8 +64,6 @@ public class DateCreator : MonoBehaviour{
 	//
 	//
 		
-		
-		
 	//Minute set
 	MinuteList = new List<GameObject>();
 	ContentMinute.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,-11);
@@ -88,7 +79,7 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponentInChildren<TMP_Text>().text=(59-a)+"";
 			clone.GetComponent<Button>().onClick.AddListener(() => ClickMinute(clone));
 		}
-    }
+	}
 
 
 	private void ClickMinute(GameObject obj){
@@ -111,10 +102,9 @@ public class DateCreator : MonoBehaviour{
 		}else{
 			TaskTime.GetComponent<TMP_Text>().text=hour+":00";
 		}
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        TaskTime.GetComponent<TMP_Text>().text= ScrollHour.GetComponent<Scrollbar>().value+"";
-    }
+	}
+	// Update is called once per frame
+	void Update(){
+		
+	}
 }
