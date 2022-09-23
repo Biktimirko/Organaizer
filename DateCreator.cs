@@ -53,8 +53,8 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceInt/2)+a)*(1f/SizeH));
 			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceInt/2)+a)*(1f/SizeH)+(1f/SizeH));
 			actionTarget =clone.GetComponent<ButSkript>();
-			actionTarget.setInfo((23-a)+"");
-			clone.GetComponentInChildren<TMP_Text>().text=(23-a)+"";
+			actionTarget.setInfo(((int)SizeH-1-a)+"");
+			clone.GetComponentInChildren<TMP_Text>().text=((int)SizeH-1-a)+"";
 			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
 		
@@ -91,7 +91,7 @@ public class DateCreator : MonoBehaviour{
 		}else{
 			TaskTime.GetComponent<TMP_Text>().text="00:"+Minute;
 		}
-    }
+	}
 	
 	private void ClickHour(GameObject obj){
 		actionTarget =obj.GetComponent<ButSkript>();
