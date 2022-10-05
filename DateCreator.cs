@@ -29,6 +29,17 @@ public class DateCreator : MonoBehaviour{
 	private ButSkript actionTarget;
 	
 	private System.DateTime MonthDate;
+	private System.DateTime MonthForDate;
+	private float 		SizeDate;
+	private float 		SpaceIntDate=0;
+	
+	private string Minute;
+	private string Hour;
+	private string Date;
+	private string Month;
+	
+	
+	
 	
 	// Start is called before the first frame update
 	void Start(){
@@ -59,10 +70,7 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceInt/2)+a)*(1f/SizeH));
 			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceInt/2)+a)*(1f/SizeH)+(1f/SizeH));
-			actionTarget =clone.GetComponent<ButSkript>();
-			actionTarget.setInfo(((int)SizeH-SpaceInt-1-a)+"");
 			clone.GetComponentInChildren<TMP_Text>().text=((int)SizeH-SpaceInt-1-a)+"";
-			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
 		
 	//
@@ -92,10 +100,7 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceIntM/2)+a)*(1f/SizeM));
 			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceIntM/2)+a)*(1f/SizeM)+(1f/SizeM));
-			actionTarget =clone.GetComponent<ButSkript>();
-			actionTarget.setInfo(((int)SizeM-SpaceIntM-1-a)+"");
 			clone.GetComponentInChildren<TMP_Text>().text=((int)SizeM-SpaceIntM-1-a)+"";
-			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
 	
 	
@@ -123,12 +128,8 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceIntMonth/2)+a)*(1f/SizeMonth));
 			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceIntMonth/2)+a)*(1f/SizeMonth)+(1f/SizeMonth));
-			actionTarget =clone.GetComponent<ButSkript>();
-			actionTarget.setInfo("");
-			
 			MonthDate = MonthDate.AddMonths(-1);
 			clone.GetComponentInChildren<TMP_Text>().text=(MonthDate.ToString("yyyy-MM"));
-			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
 		}
 	
 	CreateDate();
@@ -139,12 +140,18 @@ public class DateCreator : MonoBehaviour{
 
 	public void CreateDate(){
 	
-	Debug.Log(ScrollMonth.GetComponent<Scrollbar>().value+"");
 	
-	float 		SizeDate =24f; 		//количество объектов в списке
+	MonthForDate = System.DateTime.Now;
+	MonthForDate = MonthForDate.AddMonths((int)(23-(System.Math.Round(ScrollMonth.GetComponent<Scrollbar>().value*23))));
+	
+	foreach(Transform child in ContentDate.GetComponent<RectTransform>()) {
+    Destroy(child.gameObject);
+	}
+
+				SizeDate = System.DateTime.DaysInMonth(MonthForDate.Year, MonthForDate.Month);; 		//количество объектов в списке
 	float 		inSizeDate=5f;			//количество одновременно показываемых объектов
 	bool		freeSpaceDate=true;		//евли истина, то сверху и снизу будут пыстые места
-	float 		SpaceIntDate=0;
+				SpaceIntDate=0;
 		
 		if (freeSpaceDate){
 			SpaceIntDate = inSizeDate-1;
@@ -152,7 +159,7 @@ public class DateCreator : MonoBehaviour{
 		}
 	
 	ContentDate.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		, -(SizeDate/inSizeDate)+1);
-	ScrollDate.GetComponent<Scrollbar>().numberOfSteps=24;
+	ScrollDate.GetComponent<Scrollbar>().numberOfSteps=(int)(SizeDate-SpaceIntDate);
 	
 		for (int a = 0; a < (int)(SizeDate-SpaceIntDate); a++){
 			GameObject clone = Instantiate(ButPref) as GameObject;
@@ -162,41 +169,42 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponent<RectTransform>().offsetMax = new Vector2 	(0		,0);
 			clone.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,((SpaceIntDate/2)+a)*(1f/SizeDate));
 			clone.GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((SpaceIntDate/2)+a)*(1f/SizeDate)+(1f/SizeDate));
-			actionTarget =clone.GetComponent<ButSkript>();
-			actionTarget.setInfo("");
 			
-			clone.GetComponent<Button>().onClick.AddListener(() => ClickHour(clone));
+			clone.GetComponentInChildren<TMP_Text>().text=((int)SizeDate-SpaceIntDate-a)+"";
+			
 		}
 	
 	}
-
-
-	private void ClickMinute(GameObject obj){
-		actionTarget =obj.GetComponent<ButSkript>();
-		
-		int Minute = int.Parse(actionTarget.getInfo());
-		if (Minute<10){ 
-			TaskTime.GetComponent<TMP_Text>().text="00:0"+Minute;
-		}else{
-			TaskTime.GetComponent<TMP_Text>().text="00:"+Minute;
-		}
-	}
-	
-	private void ClickHour(GameObject obj){
-		actionTarget =obj.GetComponent<ButSkript>();
-		
-		int hour = int.Parse(actionTarget.getInfo());
-		if (hour<10){ 
-			TaskTime.GetComponent<TMP_Text>().text="0"+hour+":00";
-		}else{
-			TaskTime.GetComponent<TMP_Text>().text=hour+":00";
-		}
-	}
-	
 	
 	
 	// Update is called once per frame
 	void Update(){
+		
+
+		if (59-System.Math.Round(ScrollMinute.GetComponent<Scrollbar>().value*59)<10){
+			Minute="0"+(59-System.Math.Round(ScrollMinute.GetComponent<Scrollbar>().value*59));
+		}else{
+			Minute=""+(59-System.Math.Round(ScrollMinute.GetComponent<Scrollbar>().value*59));
+		}
+		
+		if (23-System.Math.Round(ScrollHour.GetComponent<Scrollbar>().value*23)<10){
+			Hour="0"+(23-System.Math.Round(ScrollHour.GetComponent<Scrollbar>().value*23));
+		}else{
+			Hour=""+(23-System.Math.Round(ScrollHour.GetComponent<Scrollbar>().value*23));
+		}
+		
+		
+		
+		if ((SizeDate-SpaceIntDate)-System.Math.Round(ScrollDate.GetComponent<Scrollbar>().value*(SizeDate-SpaceIntDate-1))<10){
+			Date="0"+((SizeDate-SpaceIntDate)-System.Math.Round(ScrollDate.GetComponent<Scrollbar>().value*(SizeDate-SpaceIntDate-1)));
+		}else{
+			Date=""+((SizeDate-SpaceIntDate)-System.Math.Round(ScrollDate.GetComponent<Scrollbar>().value*(SizeDate-SpaceIntDate-1)));
+		}
+		
+		
+		TaskTime.GetComponent<TMP_Text>().text=Hour+":"+Minute+"\n"+Date+"-"+MonthForDate.ToString("MM-yyyy");
+		
+		
 		
 	}
 }
