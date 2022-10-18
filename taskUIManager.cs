@@ -17,26 +17,15 @@ public class taskUIManager : MonoBehaviour{
 	private float curY, vPos;
 	
 	private taskScript actionTarget;
+	private string personalSaveData;
 	
 	// Start is called before the first frame update
     void Start(){
     taskList = new List<GameObject>();
-	
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	/*
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	AddToList("1|10:25|2012-05-28|хочу по жопке|вып|прос");
-	*/
     }
 
 
-	public void AddToList(string task){
+	public void AddToList(string task, bool record){
 	
 	GameObject clone = Instantiate(taskUnit) as GameObject;
 	clone.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>());
@@ -56,18 +45,17 @@ public class taskUIManager : MonoBehaviour{
 	actionTarget =clone.GetComponent<taskScript>();
 	actionTarget.create(task);
 	
-	
+		if(record){
+			if (PlayerPrefs.HasKey("SavedString")){
+				personalSaveData = PlayerPrefs.GetString("SavedString");
+				PlayerPrefs.SetString("SavedString", personalSaveData+System.Environment.NewLine+task);
+			}else{
+				PlayerPrefs.SetString("SavedString", task);
+			}
+		}
 	
 	}
 
-/*
-	void RectContent(){ // определение размера окна с элементами
-	
-		float height = delta.y * size;
-		scroll.content.sizeDelta = new Vector2(scroll.content.sizeDelta.x, height);
-		scroll.content.anchoredPosition = Vector2.zero;
-	}
-	*/
     // Update is called once per frame
     void Update()
     {

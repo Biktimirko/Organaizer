@@ -7,6 +7,7 @@ public class ButSkript : MonoBehaviour{
 	public string info;
     // Start is called before the first frame update
     
+	
 	public void setInfo(string Info){
 		info = Info;
     }

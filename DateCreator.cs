@@ -20,6 +20,7 @@ public class DateCreator : MonoBehaviour{
 	public GameObject ScrollDate;
 	
 	public GameObject TaskTime;
+	public GameObject TaskText;
 	
 	public GameObject ButPref;
 	
@@ -38,12 +39,17 @@ public class DateCreator : MonoBehaviour{
 	private string Date;
 	private string Month;
 	
-	
+	public GameObject Content;
+	private taskUIManager taskTarget;
 	
 	
 	// Start is called before the first frame update
 	void Start(){
 	Debug.Log("проехали");
+	
+	
+	taskTarget=Content.GetComponent<taskUIManager>();
+	
 	
 	//Hour set
 	//
@@ -173,6 +179,14 @@ public class DateCreator : MonoBehaviour{
 			clone.GetComponentInChildren<TMP_Text>().text=((int)SizeDate-SpaceIntDate-a)+"";
 			
 		}
+	
+	}
+	
+	
+	public void AddToList(){
+		
+		
+	taskTarget.AddToList("1|"+Hour+":"+Minute+"|"+MonthForDate.ToString("MM-yyyy-dd")+"|"+TaskText.GetComponent<TMP_Text>().text+"|вып|прос",true);
 	
 	}
 	

@@ -16,11 +16,11 @@ public class Controler : MonoBehaviour{
 	private bool teeck;
 	private bool deviceOrientationLandscape;
 		
-	private GameObject clockObject;
+	public GameObject clockObject;
 	private Cloks scriptTarget;
 	
-	private GameObject canvasClock;
-	private GameObject canvasInfo;
+	public GameObject canvasClock;
+	public GameObject canvasInfo;
 	
 	private string rectUI;
 	
@@ -31,17 +31,20 @@ public class Controler : MonoBehaviour{
 	
     void Start(){
 		
+		
 		//делаем привязки к объектам
-		clockObject = GameObject.Find("Clock");
-		canvasClock = GameObject.Find("CanvasClock");
-		canvasInfo = GameObject.Find("CanvasInfo");
+		
+		Debug.Log("start");
+		changeSizeFull();
 		teeck = true;
 		
 			if (Screen.orientation==ScreenOrientation.LandscapeLeft|Screen.orientation==ScreenOrientation.LandscapeRight){
 				deviceOrientationLandscape = true;
+				Debug.Log("vert");
 				changeSizeFull();
 			}else{
 				deviceOrientationLandscape = false;
+				Debug.Log("hor");
 				changeToPortrait();
 			}
 			
@@ -52,16 +55,20 @@ public class Controler : MonoBehaviour{
 		
 		
 		taskTarget=Content.GetComponent<taskUIManager>();
-		
+		/*
+		PlayerPrefs.DeleteAll();
+		*/
 		if (PlayerPrefs.HasKey("SavedString")){
-			
+		
 		personalSaveData = PlayerPrefs.GetString("SavedString");
-		taskTarget.AddToList(personalSaveData);
+		string[] parts = personalSaveData.Split(System.Environment.NewLine);
+		
+		
+		foreach (string item in parts){
+		taskTarget.AddToList(item,false);
+		}
 		
 		}else{
-			
-		taskTarget.AddToList("1|10:25|2012-05-28|у вас нет ни одного задания|вып|прос");
-		PlayerPrefs.SetString("SavedString", "1|10:25|2012-05-28|тестовое задание|вып|прос");
 		
 		}
 		
