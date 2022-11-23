@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.Notifications.Android; 
 
 public class taskScript : MonoBehaviour{
 	
@@ -10,8 +11,13 @@ public class taskScript : MonoBehaviour{
     public GameObject timer;
 	public GameObject done;
 	public GameObject taskText;
-	private int number;
 	
+	public GameObject UI;
+	public Controler Controler;
+	
+	public int number;
+	
+	private string personalSaveData;
 	
 	
 	
@@ -20,8 +26,8 @@ public class taskScript : MonoBehaviour{
 	
 	public void create(string task){
 		
-
-		
+		UI = GameObject.Find("UI");
+		Controler = UI.GetComponent<Controler>();
 		
 		string[] parts = task.Split("|");
 		
@@ -29,6 +35,15 @@ public class taskScript : MonoBehaviour{
 		
 		timer.GetComponent<TMP_Text>().text=parts[1];
 		taskText.GetComponent<TMP_Text>().text="  "+parts[3];
+		
+		
+		//1|00:00|10-2024-22|задача|вып|прос
+		
+		
+		Controler.addNotification("Есть просроченная задача:", parts[3], new System.DateTime(int.Parse(parts[2].Substring(3,4)), int.Parse(parts[2].Substring(0,2)), int.Parse(parts[2].Substring(8,2)), int.Parse(parts[1].Substring(0,2)), int.Parse(parts[1].Substring(3,2)), 0));
+		
+		
+		
 		
 		/*
 			if (parts[4]=="вып"){
@@ -46,7 +61,35 @@ public class taskScript : MonoBehaviour{
 		
 	}
 	
-	
+	public void deleteTask(){
+        
+		if (PlayerPrefs.HasKey("SavedString")){		
+			personalSaveData = PlayerPrefs.GetString("SavedString");
+			string[] parts = personalSaveData.Split(System.Environment.NewLine);
+			PlayerPrefs.DeleteAll();
+			
+			for (int a = number; a < parts.Length - 1; a++)    {
+				parts[a] = parts[a + 1];
+			}
+			
+			System.Array.Resize(ref parts, parts.Length - 1);
+			
+			
+			foreach (string item in parts){
+				if (PlayerPrefs.HasKey("SavedString")){
+					personalSaveData = PlayerPrefs.GetString("SavedString");
+					PlayerPrefs.SetString("SavedString", personalSaveData+System.Environment.NewLine+item);
+				}else{
+					PlayerPrefs.SetString("SavedString", item);
+				}
+			}
+			
+			
+		}
+		
+		Controler.SetTaskList();
+		
+    }
 	
 	void Start()
     {

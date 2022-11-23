@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Notifications.Android; 
 
 public class Controler : MonoBehaviour{
     // Start is called before the first frame update
@@ -28,6 +29,9 @@ public class Controler : MonoBehaviour{
 	private string personalSaveData;
 	public GameObject Content;
 	private taskUIManager taskTarget;
+	
+	private AndroidNotificationChannel channel;
+	private AndroidNotification notific;
 	
     void Start(){
 		
@@ -58,19 +62,9 @@ public class Controler : MonoBehaviour{
 		/*
 		PlayerPrefs.DeleteAll();
 		*/
-		if (PlayerPrefs.HasKey("SavedString")){
 		
-		personalSaveData = PlayerPrefs.GetString("SavedString");
-		string[] parts = personalSaveData.Split(System.Environment.NewLine);
-		
-		
-		foreach (string item in parts){
-		taskTarget.AddToList(item,false);
-		}
-		
-		}else{
-		
-		}
+		SetTaskList();
+		Notification();
 		
     }
 
@@ -112,11 +106,51 @@ public class Controler : MonoBehaviour{
 	
 	private void updateClock(string date){
 	
-	scriptTarget.setTime(date);
-	
-	
+		scriptTarget.setTime(date);
 	}
 	
+	public void SetTaskList(){
+		
+		//canvasInfo
+		taskTarget.refresh();
+		CancelNotifications();
+		
+		if (PlayerPrefs.HasKey("SavedString")){
+		
+		personalSaveData = PlayerPrefs.GetString("SavedString");
+		string[] parts = personalSaveData.Split(System.Environment.NewLine);
+
+		
+		foreach (string item in parts){
+		taskTarget.AddToList(item,false);
+		Debug.Log(item);
+		}
+		
+		}else{
+		
+		}
+		
+	}
+	
+	private void Notification(){	
+		channel = new AndroidNotificationChannel(){Id = "Organizer", Name = "Standart",Importance = Importance.Default,Description = "Gift notification"};
+		AndroidNotificationCenter.RegisterNotificationChannel(channel);
+		AndroidNotificationCenter.CancelAllNotifications();
+	}
+	
+	public void addNotification(string Title, string Text, System.DateTime time){
+		notific = new AndroidNotification();
+		notific.Title = Title;
+		notific.Text = Text;
+		notific.FireTime = time;
+		
+		AndroidNotificationCenter.SendNotification(notific, channel.Id);
+	}
+	
+	public void CancelNotifications(){
+		AndroidNotificationCenter.CancelAllNotifications();
+	}
+		
 	public void changeSizeHalf(){
 		
 		canvasClock.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0);

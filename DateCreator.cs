@@ -186,7 +186,7 @@ public class DateCreator : MonoBehaviour{
 	public void AddToList(){
 		
 		
-	taskTarget.AddToList("1|"+Hour+":"+Minute+"|"+MonthForDate.ToString("MM-yyyy-dd")+"|"+TaskText.GetComponent<TMP_Text>().text+"|вып|прос",true);
+	taskTarget.AddToList("|"+Hour+":"+Minute+"|"+MonthForDate.ToString("MM-yyyy-dd")+"|"+TaskText.GetComponent<TMP_Text>().text+"|вып|прос",true);
 	
 	}
 	

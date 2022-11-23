@@ -19,6 +19,7 @@ public class taskUIManager : MonoBehaviour{
 	private taskScript actionTarget;
 	private string personalSaveData;
 	
+	private int taskNum=0;
 	// Start is called before the first frame update
     void Start(){
     taskList = new List<GameObject>();
@@ -27,6 +28,8 @@ public class taskUIManager : MonoBehaviour{
 
 	public void AddToList(string task, bool record){
 	
+	taskNum++;
+	task = (taskNum+"") + task;
 	GameObject clone = Instantiate(taskUnit) as GameObject;
 	clone.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>());
 	
@@ -39,7 +42,6 @@ public class taskUIManager : MonoBehaviour{
 				
 				taskList[a].GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,(a*(1/((float)(taskList.Count))))					);
 				taskList[a].GetComponent<RectTransform>().anchorMax = new Vector2 	(1		,((a+1)*(1/((float)(taskList.Count))))				);
-				Debug.Log("------");
 			}
 			
 	actionTarget =clone.GetComponent<taskScript>();
@@ -55,7 +57,16 @@ public class taskUIManager : MonoBehaviour{
 		}
 	
 	}
-
+	
+	public void refresh(){
+		
+		foreach (GameObject tasks in taskList){
+			taskNum=0;
+			DestroyImmediate(tasks);
+		}
+	taskList.Clear();
+	this.GetComponent<RectTransform>().anchorMin = new Vector2 	(0		,0);
+	}
     // Update is called once per frame
     void Update()
     {
